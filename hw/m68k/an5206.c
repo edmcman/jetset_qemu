@@ -20,8 +20,8 @@
 #include "sysemu/qtest.h"
 
 #define KERNEL_LOAD_ADDR 0x10000
-#define AN5206_MBAR_ADDR 0x10000000
-#define AN5206_RAMBAR_ADDR 0x20000000
+#define AN5206_MBAR_ADDR 0x80000000
+#define AN5206_RAMBAR_ADDR 0x40000000
 
 /* Board init.  */
 
@@ -49,10 +49,11 @@ static void an5206_init(MachineState *machine)
 
     /* DRAM at address zero */
     memory_region_allocate_system_memory(ram, NULL, "an5206.ram", ram_size);
+    assert (ram_size > 0x1000000);
     memory_region_add_subregion(address_space_mem, 0, ram);
 
     /* Internal SRAM.  */
-    memory_region_init_ram(sram, NULL, "an5206.sram", 512, &error_fatal);
+    memory_region_init_ram(sram, NULL, "an5206.sram", 512*16, &error_fatal);
     memory_region_add_subregion(address_space_mem, AN5206_RAMBAR_ADDR, sram);
 
     mcf5206_init(address_space_mem, AN5206_MBAR_ADDR, cpu);
