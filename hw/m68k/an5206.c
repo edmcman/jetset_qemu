@@ -57,14 +57,38 @@ static void an5206_init(MachineState *machine)
 
     mcf5206_init(address_space_mem, AN5206_MBAR_ADDR, cpu);
 
+    char *fn;
+    uint8_t *ptr;
+
+    const size_t ROM_SIZE = 0x200000;
+
+    /* Load firmware */
+    if (machine->firmware) {
+        fn = qemu_find_file(QEMU_FILE_TYPE_BIOS, machine->firmware);
+        if (!fn) {
+            error_report("Could not find ROM image '%s'", machine->firmware);
+            exit(1);
+        }
+        if (load_image_targphys(fn, 0x0, ROM_SIZE) < 8) {
+            error_report("Could not load ROM image '%s'", machine->firmware);
+            exit(1);
+        }
+        g_free(fn);
+        /* Initial PC is always at offset 4 in firmware binaries */
+        ptr = rom_ptr(0x4, 4);
+        assert(ptr != NULL);
+        env->pc = ldl_p(ptr);
+    }
+
     /* Load kernel.  */
     if (!kernel_filename) {
-        if (qtest_enabled()) {
+        if (qtest_enabled() || machine->firmware) {
             return;
         }
         error_report("Kernel image must be specified");
         exit(1);
     }
+
 
     kernel_size = load_elf(kernel_filename, NULL, NULL, &elf_entry,
                            NULL, NULL, 1, EM_68K, 0, 0);
