@@ -20,6 +20,7 @@
 #include "sysemu/qtest.h"
 
 #define KERNEL_LOAD_ADDR 0x10000
+#define AN5206_RAM_ADDR 0x10000000
 #define AN5206_MBAR_ADDR 0x80000000
 #define AN5206_RAMBAR_ADDR 0x40000000
 
@@ -35,6 +36,7 @@ static void an5206_init(MachineState *machine)
     uint64_t elf_entry;
     hwaddr entry;
     MemoryRegion *address_space_mem = get_system_memory();
+    MemoryRegion *flash = g_new(MemoryRegion, 1);
     MemoryRegion *ram = g_new(MemoryRegion, 1);
     MemoryRegion *sram = g_new(MemoryRegion, 1);
 
@@ -47,10 +49,13 @@ static void an5206_init(MachineState *machine)
     env->mbar = AN5206_MBAR_ADDR | 1;
     env->rambar0 = AN5206_RAMBAR_ADDR | 1;
 
-    /* DRAM at address zero */
+    /* Flash at address zero */
+    memory_region_allocate_system_memory(flash, NULL, "an5206.flash", ram_size);
+    memory_region_add_subregion(address_space_mem, 0, flash);
+
     memory_region_allocate_system_memory(ram, NULL, "an5206.ram", ram_size);
     assert (ram_size > 0x1000000);
-    memory_region_add_subregion(address_space_mem, 0, ram);
+    memory_region_add_subregion(address_space_mem, AN5206_RAM_ADDR, ram);
 
     /* Internal SRAM.  */
     memory_region_init_ram(sram, NULL, "an5206.sram", 512*16, &error_fatal);
