@@ -262,6 +262,7 @@ static void mcf54455_cpu_initfn(Object *obj)
     m68k_set_feature(env, M68K_FEATURE_SCALED_INDEX);
     m68k_set_feature(env, M68K_FEATURE_LONG_MULDIV);
     m68k_set_feature(env, M68K_FEATURE_BCCL);
+    m68k_set_feature(env, M68K_FEATURE_CF_FPU);
 }
 
 static void any_cpu_initfn(Object *obj)
