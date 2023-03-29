@@ -21,7 +21,8 @@
 
 #define KERNEL_LOAD_ADDR 0x10000
 #define AN5206_RAM_ADDR 0x10000000
-#define AN5206_MBAR_ADDR 0x80000000
+#define AN5206_SRAM_ADDR 0x80000000
+#define AN5206_MBAR_ADDR 0xf0000000
 #define AN5206_RAMBAR_ADDR 0x40000000
 
 /* Board init.  */
@@ -38,6 +39,7 @@ static void an5206_init(MachineState *machine)
     MemoryRegion *address_space_mem = get_system_memory();
     MemoryRegion *flash = g_new(MemoryRegion, 1);
     MemoryRegion *ram = g_new(MemoryRegion, 1);
+    MemoryRegion *rambar = g_new(MemoryRegion, 1);
     MemoryRegion *sram = g_new(MemoryRegion, 1);
 
     cpu = M68K_CPU(cpu_create(machine->cpu_type));
@@ -57,9 +59,13 @@ static void an5206_init(MachineState *machine)
     assert (ram_size > 0x1000000);
     memory_region_add_subregion(address_space_mem, AN5206_RAM_ADDR, ram);
 
+    memory_region_allocate_system_memory(rambar, NULL, "an5206.rambar", ram_size);
+    assert (ram_size > 0x1000000);
+    memory_region_add_subregion(address_space_mem, AN5206_RAMBAR_ADDR, rambar);
+
     /* Internal SRAM.  */
     memory_region_init_ram(sram, NULL, "an5206.sram", 512*16, &error_fatal);
-    memory_region_add_subregion(address_space_mem, AN5206_RAMBAR_ADDR, sram);
+    memory_region_add_subregion(address_space_mem, AN5206_SRAM_ADDR, sram);
 
     mcf5206_init(address_space_mem, AN5206_MBAR_ADDR, cpu);
 
