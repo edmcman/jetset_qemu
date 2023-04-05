@@ -21,8 +21,8 @@
 
 #define KERNEL_LOAD_ADDR 0x10000
 #define AN5206_RAM_ADDR 0x10000000
-#define AN5206_SRAM_ADDR 0x80000000
-#define AN5206_MBAR_ADDR 0xf0000000
+//#define AN5206_SRAM_ADDR 0xf0000000
+#define AN5206_MBAR_ADDR 0x80000000
 #define AN5206_RAMBAR_ADDR 0x40000000
 
 /* Board init.  */
@@ -64,8 +64,8 @@ static void an5206_init(MachineState *machine)
     memory_region_add_subregion(address_space_mem, AN5206_RAMBAR_ADDR, rambar);
 
     /* Internal SRAM.  */
-    memory_region_init_ram(sram, NULL, "an5206.sram", 512*16, &error_fatal);
-    memory_region_add_subregion(address_space_mem, AN5206_SRAM_ADDR, sram);
+    //memory_region_init_ram(sram, NULL, "an5206.sram", 512*16, &error_fatal);
+    //memory_region_add_subregion(address_space_mem, AN5206_SRAM_ADDR, sram);
 
     mcf5206_init(address_space_mem, AN5206_MBAR_ADDR, cpu);
 
