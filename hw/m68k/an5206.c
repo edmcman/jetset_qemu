@@ -122,7 +122,7 @@ static void an5206_init(MachineState *machine)
     env->pc = entry;
 
     DeviceState *dev = qdev_create(NULL, "simple_synth");
-    qdev_prop_set_uint32(dev, "size", 0xeff);
+    qdev_prop_set_uint32(dev, "size", 0x3ffff);
     qdev_prop_set_uint32(dev, "base_addr", 0x80000000);
     qdev_init_nofail(dev);
 }
