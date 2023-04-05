@@ -17,7 +17,7 @@ common-obj-$(CONFIG_SYNTH_PLC) += plc_device.o
 common-obj-$(CONFIG_SYNTH_PLC) += steering_control_device.o 
 common-obj-$(CONFIG_SYNTH_SAM3X8E) += synth_sam3x8e.o
 common-obj-$(CONFIG_SYNTH_MK64FN1) += synth_mk64fn1.o
-
+common-obj-$(CONFIG_SYNTH_SEL) += synth_sel.o
 
 
 
