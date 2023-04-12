@@ -788,6 +788,7 @@ void qmp_sc_add_breakpoint(uint64_t addr, uint8_t type, Error **errp)
 void qmp_finalize_decision(uint64_t pc, uint32_t val, Error **errp)
 {
     finalized_decision fdec = {.pc=pc,.val=val}; 
+    assert (cur_sc->fdec_idx < NumFinalize)
     cur_sc->finalized_decisions[cur_sc->fdec_idx++] = fdec;
 }
 
@@ -795,6 +796,7 @@ void qmp_finalize_decision(uint64_t pc, uint32_t val, Error **errp)
 void qmp_finalize_io(uint64_t addr, uint32_t val, Error **errp)
 {
     finalized_io fio = {.addr=addr,.val=val}; 
+    assert (cur_sc->fio_idx < NumFinalize);
     cur_sc->finalized_io[cur_sc->fio_idx++] = fio;
 }
 

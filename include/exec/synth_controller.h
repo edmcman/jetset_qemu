@@ -52,6 +52,8 @@ typedef struct finalized_io
     uint64_t val;   
 } finalized_io;
 
+#define NumFinalize 1024
+
 typedef struct SynthController
 {
 	uint8_t id;
@@ -73,9 +75,9 @@ typedef struct SynthController
     int32_t pending_intr;
     uint64_t taint1;
     uint64_t taint2;
-    finalized_decision finalized_decisions[32];
+    finalized_decision finalized_decisions[NumFinalize];
     int32_t fdec_idx;
-    finalized_io finalized_io[32];
+    finalized_io finalized_io[NumFinalize];
     int32_t fio_idx;
     uint8_t archname;
 
