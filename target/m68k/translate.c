@@ -3036,10 +3036,10 @@ DISAS_INSN(branch)
     if (op > 1) {
         /* Bcc */
         l1 = gen_new_label();
-        gen_jmpcc(s, ((insn >> 8) & 0xf) ^ 1, l1);
-        gen_jmp_tb(s, 1, base + offset);
-        gen_set_label(l1);
+        gen_jmpcc(s, ((insn >> 8) & 0xf), l1);
         gen_jmp_tb(s, 0, s->pc);
+        gen_set_label(l1);
+        gen_jmp_tb(s, 1, base + offset);
     } else {
         /* Unconditional branch.  */
         update_cc_op(s);
