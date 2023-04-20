@@ -6,4 +6,4 @@ $( dirname "${BASH_SOURCE[0]}" )/build/m68k-softmmu/qemu-system-m68k -cpu cfv4e 
   -device loader,file=$(dirname "${BASH_SOURCE[0]}")/../jetset_private_data/sel/r512351s.bin.skipped,addr=0x100000,force-raw=true \
   -device loader,addr=0x420,cpu-num=0 \
   -m 256 \
-  -d nochain,cpu -singlestep -S -qmp tcp:localhost:$1,server,nowait 2>&1 | tail -n1000 > /tmp/log
+  -d nochain -singlestep -S -qmp tcp:localhost:$1,server,nowait > /tmp/log 2>&1
