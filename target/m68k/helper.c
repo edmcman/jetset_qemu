@@ -206,7 +206,7 @@ void HELPER(cf_movec_to)(CPUM68KState *env, uint32_t reg, uint32_t val)
         env->rambar1 = val;
         break;
     default:
-        fprintf(stderr, "Uh ohs\n");
+        fprintf(stderr, "Unimplemented control register write 0x%x = 0x%x\n", reg, val);
         /*cpu_abort(CPU(cpu),
                   "Unimplemented control register write 0x%x = 0x%x\n",
                   reg, val);*/
